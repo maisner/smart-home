@@ -1,0 +1,8 @@
+log/*
+temp/*
+vendor/*
+node_modules/*
+.idea
+!.gitignore
+!.htaccess
+!.gitkeep

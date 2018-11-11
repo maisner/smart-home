@@ -1,0 +1,15 @@
+parameters:
+
+
+application:
+	errorPresenter: Error
+	mapping:
+		*: Maisner\SmartHome\*Module\Presenters\*Presenter
+
+
+session:
+	expiration: 14 days
+
+
+services:
+	router: Maisner\SmartHome\Router\RouterFactory::createRouter
