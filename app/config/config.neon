@@ -10,6 +10,24 @@ application:
 session:
 	expiration: 14 days
 
+dbal:
+    connection:
+        host: mysql
+        user: root
+        password: pass
+        dbname: smart-home
+
+orm.annotations:
+    paths:
+        - %appDir%/Model
 
 services:
 	router: Maisner\SmartHome\Router\RouterFactory::createRouter
+
+
+extensions:
+    dbal: Nettrine\DBAL\DI\DbalExtension
+    orm: Nettrine\ORM\DI\OrmExtension
+    orm.annotations: Nettrine\ORM\DI\OrmAnnotationsExtension
+    console: Contributte\Console\DI\ConsoleExtension(%consoleMode%)
+    orm.console: Nettrine\ORM\DI\OrmConsoleExtension
