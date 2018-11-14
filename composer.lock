@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cca803b378f8b84d0ef39f5b874989d3",
+    "content-hash": "2132a08a593fa488501eec261d661ec6",
     "packages": [
         {
             "name": "contributte/console",
@@ -1174,6 +1174,47 @@
                 "twig"
             ],
             "time": "2018-06-03T17:34:15+00:00"
+        },
+        {
+            "name": "maisner/enum",
+            "version": "v0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/maisner/enum.git",
+                "reference": "54ca5cae970602aa928293e53912173e8aba1253"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/maisner/enum/zipball/54ca5cae970602aa928293e53912173e8aba1253",
+                "reference": "54ca5cae970602aa928293e53912173e8aba1253",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">= 7.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Maisner\\Enum\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michal Šmeidler",
+                    "homepage": "https://github.com/maisner"
+                }
+            ],
+            "description": "Enum PHP implementation",
+            "homepage": "https://github.com/maisner/enum",
+            "keywords": [
+                "enum",
+                "php"
+            ],
+            "time": "2018-11-14T19:50:26+00:00"
         },
         {
             "name": "nette/application",

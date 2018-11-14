@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Maisner\SmartHome\Model;
+namespace Maisner\SmartHome\Model\Sensor\ORM;
 
 
 use Doctrine\ORM\Mapping as ORM;
@@ -10,6 +10,12 @@ use Maisner\SmartHome\Model\Utils\BaseEntity;
  * @ORM\Entity
  */
 class Sensor extends BaseEntity {
+
+	/**
+	 * @var string
+	 * @ORM\Column(type="string", nullable=FALSE)
+	 */
+	protected $name;
 
 	/**
 	 * @var string
@@ -34,13 +40,22 @@ class Sensor extends BaseEntity {
 	/**
 	 * Sensor constructor.
 	 * @param \DateTimeImmutable $createdAt
+	 * @param string             $name
 	 * @param string             $type
 	 * @param string             $url
 	 */
-	public function __construct(\DateTimeImmutable $createdAt, string $type, string $url) {
+	public function __construct(\DateTimeImmutable $createdAt, string $name, string $type, string $url) {
 		$this->createdAt = $createdAt;
+		$this->name = $name;
 		$this->type = $type;
 		$this->url = $url;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName(): string {
+		return $this->name;
 	}
 
 	/**
@@ -69,6 +84,13 @@ class Sensor extends BaseEntity {
 	 */
 	public function getReadInterval(): int {
 		return $this->readInterval;
+	}
+
+	/**
+	 * @param string $name
+	 */
+	public function setName(string $name): void {
+		$this->name = $name;
 	}
 
 	/**

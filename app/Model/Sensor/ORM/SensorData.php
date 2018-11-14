@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Maisner\SmartHome\Model;
+namespace Maisner\SmartHome\Model\Sensor\ORM;
 
 
 use Doctrine\ORM\Mapping as ORM;
@@ -13,7 +13,7 @@ class SensorData extends BaseEntity {
 
 	/**
 	 * @var Sensor
-	 * @ORM\ManyToOne(targetEntity="\Maisner\SmartHome\Model\Sensor")
+	 * @ORM\ManyToOne(targetEntity="\Maisner\SmartHome\Model\Sensor\ORM\Sensor")
 	 */
 	protected $sensor;
 
