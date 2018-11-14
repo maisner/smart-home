@@ -16,6 +16,10 @@ dbal:
         user: root
         password: pass
         dbname: smart-home
+        types:
+        	sensor_type_enum:
+        		class: Maisner\SmartHome\Model\Utils\Doctrine\Type\SensorTypeEnumType
+        		commented: false
 
 orm.annotations:
     paths:

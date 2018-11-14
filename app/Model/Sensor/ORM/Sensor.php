@@ -4,6 +4,7 @@ namespace Maisner\SmartHome\Model\Sensor\ORM;
 
 
 use Doctrine\ORM\Mapping as ORM;
+use Maisner\SmartHome\Model\Sensor\TypeEnum;
 use Maisner\SmartHome\Model\Utils\BaseEntity;
 
 /**
@@ -18,8 +19,8 @@ class Sensor extends BaseEntity {
 	protected $name;
 
 	/**
-	 * @var string
-	 * @ORM\Column(type="string", nullable=FALSE)
+	 * @var TypeEnum
+	 * @ORM\Column(type="sensor_type_enum", nullable=FALSE)
 	 */
 	protected $type;
 
@@ -41,10 +42,10 @@ class Sensor extends BaseEntity {
 	 * Sensor constructor.
 	 * @param \DateTimeImmutable $createdAt
 	 * @param string             $name
-	 * @param string             $type
+	 * @param TypeEnum           $type
 	 * @param string             $url
 	 */
-	public function __construct(\DateTimeImmutable $createdAt, string $name, string $type, string $url) {
+	public function __construct(\DateTimeImmutable $createdAt, string $name, TypeEnum $type, string $url) {
 		$this->createdAt = $createdAt;
 		$this->name = $name;
 		$this->type = $type;
@@ -59,9 +60,9 @@ class Sensor extends BaseEntity {
 	}
 
 	/**
-	 * @return string
+	 * @return TypeEnum
 	 */
-	public function getType(): string {
+	public function getType(): TypeEnum {
 		return $this->type;
 	}
 
