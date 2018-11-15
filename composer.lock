@@ -1177,20 +1177,26 @@
         },
         {
             "name": "maisner/enum",
-            "version": "v0.1",
+            "version": "v0.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/maisner/enum.git",
-                "reference": "54ca5cae970602aa928293e53912173e8aba1253"
+                "reference": "0d1b6f4e89dd3f5811cfb097242a750412d49ac4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/maisner/enum/zipball/54ca5cae970602aa928293e53912173e8aba1253",
-                "reference": "54ca5cae970602aa928293e53912173e8aba1253",
+                "url": "https://api.github.com/repos/maisner/enum/zipball/0d1b6f4e89dd3f5811cfb097242a750412d49ac4",
+                "reference": "0d1b6f4e89dd3f5811cfb097242a750412d49ac4",
                 "shasum": ""
             },
             "require": {
                 "php": ">= 7.1"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.10.5",
+                "phpstan/phpstan-strict-rules": "^0.10.1",
+                "phpunit/phpunit": "^7.4",
+                "slevomat/coding-standard": "^4.8"
             },
             "type": "library",
             "autoload": {
@@ -1214,7 +1220,7 @@
                 "enum",
                 "php"
             ],
-            "time": "2018-11-14T19:50:26+00:00"
+            "time": "2018-11-15T13:24:06+00:00"
         },
         {
             "name": "nette/application",
