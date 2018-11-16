@@ -4,11 +4,12 @@ namespace Maisner\SmartHome\Model\Utils;
 
 
 use Doctrine\ORM\Mapping as ORM;
+use Nette\NotImplementedException;
 
 abstract class BaseEntity {
 
 	/**
-	 * @var int|null
+	 * @var int
 	 * @ORM\Column(type="integer", nullable=FALSE)
 	 * @ORM\Id
 	 * @ORM\GeneratedValue
@@ -36,14 +37,14 @@ abstract class BaseEntity {
 	}
 
 	/**
-	 * @return int|null
+	 * @return int
 	 */
-	public function getId(): ?int {
+	public function getId(): int {
 		return $this->id;
 	}
 
 	public function __clone() {
-		$this->id = NULL;
+		throw new NotImplementedException();
 	}
 
 	/**

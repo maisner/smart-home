@@ -28,6 +28,9 @@ orm.annotations:
 services:
 	router: Maisner\SmartHome\Router\RouterFactory::createRouter
 
+	- Maisner\SmartHome\Model\Sensor\SensorReader
+	- Maisner\SmartHome\Model\Sensor\ORM\SensorRepository
+	- Maisner\SmartHome\Model\Sensor\ORM\SensorDataRepository
 
 extensions:
     dbal: Nettrine\DBAL\DI\DbalExtension
