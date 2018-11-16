@@ -28,6 +28,14 @@ abstract class BaseEntity {
 	protected $updatedAt;
 
 	/**
+	 * BaseEntity constructor.
+	 * @param \DateTimeImmutable $createdAt
+	 */
+	public function __construct(\DateTimeImmutable $createdAt) {
+		$this->createdAt = $createdAt;
+	}
+
+	/**
 	 * @return int|null
 	 */
 	public function getId(): ?int {

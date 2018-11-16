@@ -23,7 +23,7 @@ class SensorTypeEnumType extends Type {
 	 * @return string
 	 */
 	public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string {
-		return 'SENSOR_TYPE_ENUM';
+		return 'VARCHAR (100)';
 	}
 
 	/**

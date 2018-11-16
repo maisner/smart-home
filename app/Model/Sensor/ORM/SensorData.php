@@ -30,7 +30,8 @@ class SensorData extends BaseEntity {
 	 * @param string             $data
 	 */
 	public function __construct(\DateTimeImmutable $createdAt, Sensor $sensor, string $data) {
-		$this->createdAt = $createdAt;
+		parent::__construct($createdAt);
+
 		$this->sensor = $sensor;
 		$this->data = $data;
 	}

@@ -13,6 +13,12 @@ use Maisner\SmartHome\Model\Utils\BaseEntity;
 class Sensor extends BaseEntity {
 
 	/**
+	 * @var SensorGroup
+	 * @ORM\ManyToOne(targetEntity="\Maisner\SmartHome\Model\Sensor\ORM\SensorGroup")
+	 */
+	protected $group;
+
+	/**
 	 * @var string
 	 * @ORM\Column(type="string", nullable=FALSE)
 	 */
@@ -41,15 +47,38 @@ class Sensor extends BaseEntity {
 	/**
 	 * Sensor constructor.
 	 * @param \DateTimeImmutable $createdAt
+	 * @param SensorGroup        $group
 	 * @param string             $name
 	 * @param TypeEnum           $type
 	 * @param string             $url
 	 */
-	public function __construct(\DateTimeImmutable $createdAt, string $name, TypeEnum $type, string $url) {
-		$this->createdAt = $createdAt;
+	public function __construct(
+		\DateTimeImmutable $createdAt,
+		SensorGroup $group,
+		string $name,
+		TypeEnum $type,
+		string $url
+	) {
+		parent::__construct($createdAt);
+
+		$this->group = $group;
 		$this->name = $name;
 		$this->type = $type;
 		$this->url = $url;
+	}
+
+	/**
+	 * @return SensorGroup
+	 */
+	public function getGroup(): SensorGroup {
+		return $this->group;
+	}
+
+	/**
+	 * @param SensorGroup $group
+	 */
+	public function setGroup(SensorGroup $group): void {
+		$this->group = $group;
 	}
 
 	/**
@@ -57,6 +86,13 @@ class Sensor extends BaseEntity {
 	 */
 	public function getName(): string {
 		return $this->name;
+	}
+
+	/**
+	 * @param string $name
+	 */
+	public function setName(string $name): void {
+		$this->name = $name;
 	}
 
 	/**
@@ -85,13 +121,6 @@ class Sensor extends BaseEntity {
 	 */
 	public function getReadInterval(): int {
 		return $this->readInterval;
-	}
-
-	/**
-	 * @param string $name
-	 */
-	public function setName(string $name): void {
-		$this->name = $name;
 	}
 
 	/**
