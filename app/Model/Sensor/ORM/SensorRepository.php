@@ -5,6 +5,7 @@ namespace Maisner\SmartHome\Model\Sensor\ORM;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Maisner\SmartHome\Model\Utils\Exceptions\EntityNotFoundException;
 
 class SensorRepository {
 
@@ -24,6 +25,21 @@ class SensorRepository {
 		/** @var EntityRepository $repository */
 		$repository = $em->getRepository(Sensor::class);
 		$this->repository = $repository;
+	}
+
+	/**
+	 * @param int $id
+	 * @return Sensor
+	 * @throws EntityNotFoundException
+	 */
+	public function getById(int $id): Sensor {
+		$sensor = $this->repository->findOneBy(['id' => $id]);
+
+		if (!$sensor instanceof Sensor) {
+			throw new EntityNotFoundException(Sensor::class, $id);
+		}
+
+		return $sensor;
 	}
 
 	/**
