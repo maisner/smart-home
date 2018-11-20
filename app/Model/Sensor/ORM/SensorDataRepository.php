@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Tracy\ILogger;
 
 class SensorDataRepository {
@@ -48,6 +49,84 @@ class SensorDataRepository {
 		?int $offset = NULL
 	): array {
 		return $this->repository->findBy(['sensor' => $sensorId], $orderBy, $limit, $offset);
+	}
+
+	/**
+	 * @param int                $sensorId
+	 * @param \DateTimeImmutable $day
+	 * @return array|SensorData[]
+	 */
+	public function findByDay(int $sensorId, \DateTimeImmutable $day): array {
+		$sql = '
+			SELECT * FROM sensor_data d WHERE
+			`d`.`sensor_id` = ? AND
+			DATE(`d`.`created_at`) = ?
+			';
+
+		$params = [
+			$sensorId,
+			$day->format('Y-m-d')
+		];
+
+		$rsm = new ResultSetMappingBuilder($this->em);
+		$rsm->addRootEntityFromClassMetadata(SensorData::class, 'd');
+
+		return $this->em->createNativeQuery($sql, $rsm)
+			->setParameters($params)
+			->getResult();
+	}
+
+	/**
+	 * @param int                $sensorId
+	 * @param \DateTimeImmutable $day
+	 * @param int                $hour
+	 * @return array|SensorData[]
+	 */
+	public function findByDayHour(int $sensorId, \DateTimeImmutable $day, int $hour): array {
+		$sql = '
+			SELECT * FROM sensor_data d WHERE
+			`d`.`sensor_id` = ? AND
+			DATE(`d`.`created_at`) = ? AND
+			HOUR(`d`.`created_at`) = ? 
+			';
+
+		$params = [
+			$sensorId,
+			$day->format('Y-m-d'),
+			$hour
+		];
+
+		$rsm = new ResultSetMappingBuilder($this->em);
+		$rsm->addRootEntityFromClassMetadata(SensorData::class, 'd');
+
+		return $this->em->createNativeQuery($sql, $rsm)
+			->setParameters($params)
+			->getResult();
+	}
+
+	/**
+	 * @param int $sensorId
+	 * @param int $hour
+	 * @return array|SensorData[]
+	 */
+	public function findByHour(int $sensorId, int $hour): array {
+		$sql = '
+			SELECT * FROM sensor_data d WHERE
+			`d`.`sensor_id` = ? AND
+			HOUR(`d`.`created_at`) = ? 
+			';
+
+		$params = [
+			$sensorId,
+			$hour
+		];
+
+		$rsm = new ResultSetMappingBuilder($this->em);
+		$rsm->addRootEntityFromClassMetadata(SensorData::class, 'd');
+
+		return $this->em->createNativeQuery($sql, $rsm)
+			->setParameters($params)
+			->getResult();
 	}
 
 	/**

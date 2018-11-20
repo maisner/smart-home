@@ -21,6 +21,8 @@ dbal:
         		class: Maisner\SmartHome\Model\Utils\Doctrine\Type\SensorTypeEnumType
         		commented: false
 
+    debug: %debugMode%
+
 orm.annotations:
     paths:
         - %appDir%/Model
@@ -31,6 +33,7 @@ services:
 	- Maisner\SmartHome\Model\Sensor\SensorReader
 	- Maisner\SmartHome\Model\Sensor\ORM\SensorRepository
 	- Maisner\SmartHome\Model\Sensor\ORM\SensorDataRepository
+	- Maisner\SmartHome\Model\Sensor\SensorDataProvider
 
 extensions:
     dbal: Nettrine\DBAL\DI\DbalExtension
