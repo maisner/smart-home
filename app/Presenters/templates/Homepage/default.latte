@@ -6,34 +6,34 @@
 
 
 <div style="height: 300px">
-	<canvas id="myChart" style="height: 200px"></canvas>
+	<canvas id="tempChart" style="height: 200px"></canvas>
 </div>
 
 <script>
-	var ctx = document.getElementById("myChart").getContext('2d');
-	var myChart = new Chart(ctx, {
-		type: 'line',
-		data: {
-			labels: [{foreach $dates as $date}{$date}{sep},{/sep}{/foreach}],
-			datasets: [{
-				label: 'Sensor 1',
-				data: [{foreach $temperatures as $temp}{$temp}{sep},{/sep}{/foreach}],
+	var ctx = document.getElementById("tempChart").getContext('2d');
+	var tempChart = new Chart(ctx, {
+		type:    'line',
+		data:    {
+			labels:   [{foreach $data->getDates() as $date}{$date}{sep},{/sep}{/foreach}],
+			datasets: [ {
+				label: {$data->getSensorName()},
+				data:            [{foreach $data->getTemperatureValues() as $temp}{$temp}{sep},{/sep}{/foreach}],
 				backgroundColor: [
 					'rgba(75, 192, 192, 0.2)'
 				],
-				borderColor: [
+				borderColor:     [
 					'rgba(75, 192, 192, 1)'
 				],
-				borderWidth: 1
-			}]
+				borderWidth:     1
+			} ]
 		},
 		options: {
 			scales: {
-				yAxes: [{
+				yAxes: [ {
 					ticks: {
-						beginAtZero:true
+						beginAtZero: true
 					}
-				}]
+				} ]
 			}
 		}
 	});
