@@ -3,6 +3,7 @@
 namespace Maisner\SmartHome\Model\Sensor\ChartData;
 
 
+use Maisner\SmartHome\Model\Sensor\ORM\Sensor;
 use Maisner\SmartHome\Model\Sensor\ORM\SensorData;
 use Nette\InvalidArgumentException;
 
@@ -35,5 +36,31 @@ class TemperatureChartDataFactory {
 		}
 
 		return new TemperatureChartData($sensorName, $dates, $temperatures, $humidities);
+	}
+
+	/**
+	 * @param array|array[] $array
+	 * @param Sensor        $sensor
+	 * @return TemperatureChartData
+	 */
+	public static function createFromArray(array $array, Sensor $sensor): TemperatureChartData {
+		$temperatures = [];
+		$humidities = [];
+		$dates = [];
+
+		foreach ($array as $key => $item) {
+			if (\count($item) === 0) {
+				$temperatures[] = NULL;
+				$humidities[] = NULL;
+				$dates[] = (string)$key;
+
+				continue;
+			}
+			$temperatures[] = (string)$item['temperature_avg'];
+			$humidities[] = (string)$item['humidity_avg'];
+			$dates[] = (string)$key;
+		}
+
+		return new TemperatureChartData($sensor->getName(), $dates, $temperatures, $humidities);
 	}
 }

@@ -11,18 +11,18 @@ class TemperatureChartData {
 	/** @var array|string[] */
 	private $dates;
 
-	/** @var array|string[] */
+	/** @var array|string[]|null[] */
 	private $temperatureValues;
 
-	/** @var array|string[] */
+	/** @var array|string[]|null[] */
 	private $humidityValues;
 
 	/**
 	 * TemperatureChartData constructor.
-	 * @param string         $sensorName
-	 * @param array|string[] $dates
-	 * @param array|string[] $temperatureValues
-	 * @param array|string[] $humidityValues
+	 * @param string                $sensorName
+	 * @param array|string[]        $dates
+	 * @param array|string[]|null[] $temperatureValues
+	 * @param array|string[]|null[] $humidityValues
 	 */
 	public function __construct(string $sensorName, array $dates, array $temperatureValues, array $humidityValues) {
 		$this->sensorName = $sensorName;
@@ -46,14 +46,14 @@ class TemperatureChartData {
 	}
 
 	/**
-	 * @return array|string[]
+	 * @return array|string[]|null[]
 	 */
 	public function getTemperatureValues(): array {
 		return $this->temperatureValues;
 	}
 
 	/**
-	 * @return array|string[]
+	 * @return array|string[]|null[]
 	 */
 	public function getHumidityValues(): array {
 		return $this->humidityValues;

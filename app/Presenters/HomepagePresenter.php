@@ -27,15 +27,17 @@ final class HomepagePresenter extends Nette\Application\UI\Presenter {
 	public function actionDefault(): void {
 		$sensor = $this->sensorRepository->getById(1);
 
-		//		$a = $this->sensorDataProvider->findByDay(new \DateTimeImmutable(), $sensor);
-		//		\dump($a);
+		//		$temperatureChartData = TemperatureChartDataFactory::create(
+		//			$this->sensorDataRepository->findBySensor($sensor->getId())
+		//		);
 
-		//		$a = $this->sensorDataProvider->getDayAvarageValues($sensor->getId(), new \DateTimeImmutable('2018-11-10'), new \DateTimeImmutable('2018-11-20'));
-		//		\dump($a);
-		//		exit;
-
-		$temperatureChartData = TemperatureChartDataFactory::create(
-			$this->sensorDataRepository->findBySensor($sensor->getId())
+		$temperatureChartData = TemperatureChartDataFactory::createFromArray(
+			$this->sensorDataProvider->getHourAverageValues(
+				$sensor->getId(),
+				new \DateTimeImmutable('2018-11-17'),
+				new \DateTimeImmutable('2018-11-17')
+			),
+			$sensor
 		);
 		$this->getTemplate()->data = $temperatureChartData;
 	}
