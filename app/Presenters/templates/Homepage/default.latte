@@ -3,45 +3,54 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
 	<h1 class="h2">Dashboard</h1>
 	<div class="btn-toolbar mb-2 mb-md-0">
-		<div class="btn-group mr-2">
-			<button class="btn btn-sm btn-outline-secondary">Share</button>
-			<button class="btn btn-sm btn-outline-secondary">Export</button>
-		</div>
-		<button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-			<span data-feather="calendar"></span>
-			This week
-		</button>
+		{form filterDate class => "form-inline ajax"}
+			<div class="form-group">
+				{label from class => "bmd-label-floating"}
+				{input from class => "form-control"}
+			</div>
+
+			<div class="form-group">
+				{label to class => "bmd-label-floating"}
+				{input to class => "form-control"}
+			</div>
+
+			<span class="form-group bmd-form-group">
+		<button n:name="submit" type="submit" class="btn btn-primary">Filtrovat</button>
+	</span>
+		{/form}
 	</div>
 </div>
 
-<canvas id="tempChart" style="height: 200px"></canvas>
+{snippet chart}
+	<canvas id="tempChart" style="height: 200px"></canvas>
 
-<script>
-	var ctx = document.getElementById("tempChart").getContext('2d');
-	var tempChart = new Chart(ctx, {
-		type:    'line',
-		data:    {
-			labels:   [{foreach $data->getDates() as $date}{$date}{sep},{/sep}{/foreach}],
-			datasets: [ {
-				label: {$data->getSensorName()},
-				data:            [{foreach $data->getTemperatureValues() as $temp}{$temp}{sep},{/sep}{/foreach}],
-				pointRadius: 0,
-				backgroundColor: 'transparent',
-				borderColor:     '#007bff',
-				borderWidth:     4,
-				pointBackgroundColor: '#007bff'
-			} ]
-		},
-		options: {
-			scales: {
-				yAxes: [ {
-					ticks: {
-						suggestedMin: -5,
-						suggestedMax: 30,
-						stepSize: 2
-					}
+	<script>
+		var ctx = document.getElementById("tempChart").getContext('2d');
+		var tempChart = new Chart(ctx, {
+			type:    'line',
+			data:    {
+				labels:   [{foreach $data->getDates() as $date}{$date}{sep},{/sep}{/foreach}],
+				datasets: [ {
+					label: {$data->getSensorName()},
+					data:                 [{foreach $data->getTemperatureValues() as $temp}{$temp}{sep},{/sep}{/foreach}],
+					pointRadius:          1,
+					backgroundColor:      'transparent',
+					borderColor:          '#007bff',
+					borderWidth:          2,
+					pointBackgroundColor: '#007bff'
 				} ]
+			},
+			options: {
+				scales: {
+					yAxes: [ {
+						ticks: {
+							suggestedMin: -5,
+							suggestedMax: 30,
+							stepSize:     2
+						}
+					} ]
+				}
 			}
-		}
-	});
-</script>
+		});
+	</script>
+{/snippet}

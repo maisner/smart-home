@@ -8,9 +8,19 @@ use Maisner\SmartHome\Model\Sensor\ORM\SensorRepository;
 use Maisner\SmartHome\Model\Sensor\SensorDataProvider;
 use Maisner\SmartHome\Model\Sensor\SensorReader;
 use Nette;
+use Nette\Application\UI\Form;
+use Nette\Utils\ArrayHash;
 
 
 final class HomepagePresenter extends Nette\Application\UI\Presenter {
+
+	public const DATE_FORMAT = 'Y-m-d';
+
+	/** @var string @persistent */
+	public $from;
+
+	/** @var string @persistent */
+	public $to;
 
 	/** @var SensorReader @inject */
 	public $sensorReader;
@@ -24,21 +34,29 @@ final class HomepagePresenter extends Nette\Application\UI\Presenter {
 	/** @var SensorDataProvider @inject */
 	public $sensorDataProvider;
 
-	public function actionDefault(): void {
-		$sensor = $this->sensorRepository->getById(1);
+	public function beforeRender(): void {
+		parent::beforeRender();
 
-		//		$temperatureChartData = TemperatureChartDataFactory::create(
-		//			$this->sensorDataRepository->findBySensor($sensor->getId())
-		//		);
+		$today = (new \DateTimeImmutable())->format(self::DATE_FORMAT);
+
+		if ($this->from === NULL || $this->to === NULL) {
+			$this->from = $today;
+			$this->to = $today;
+		}
+	}
+
+	public function renderDefault(): void {
+		$sensor = $this->sensorRepository->getById(1);
 
 		$temperatureChartData = TemperatureChartDataFactory::createFromArray(
 			$this->sensorDataProvider->getHourAverageValues(
 				$sensor->getId(),
-				new \DateTimeImmutable('2018-11-17'),
-				new \DateTimeImmutable('2018-11-17')
+				new \DateTimeImmutable($this->from),
+				new \DateTimeImmutable($this->to)
 			),
 			$sensor
 		);
+
 		$this->getTemplate()->data = $temperatureChartData;
 	}
 
@@ -46,5 +64,39 @@ final class HomepagePresenter extends Nette\Application\UI\Presenter {
 		$this->sensorReader->readAll();
 
 		$this->terminate();
+	}
+
+	/**
+	 * @return Form
+	 * @throws \Exception
+	 */
+	protected function createComponentFilterDate(): Form {
+		$form = new Form();
+		$form->addText('from', 'Od')
+			->setDefaultValue($this->from)
+			->setType('date')
+			->setRequired();
+
+		$form->addText('to', 'Do')
+			->setDefaultValue($this->to)
+			->setType('date')
+			->setRequired();
+
+		$form->addSubmit('submit', 'Odeslat');
+
+		$form->onSuccess[] = function (Form $form, ArrayHash $values): void {
+			$this->from = $values->from;
+			$this->to = $values->to;
+
+			if ($this->isAjax()) {
+				$this->redrawControl('chart');
+
+				return;
+			}
+
+			$this->redirect('this');
+		};
+
+		return $form;
 	}
 }
