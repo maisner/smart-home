@@ -7,12 +7,11 @@ use Maisner\SmartHome\Model\Sensor\ORM\SensorDataRepository;
 use Maisner\SmartHome\Model\Sensor\ORM\SensorRepository;
 use Maisner\SmartHome\Model\Sensor\SensorDataProvider;
 use Maisner\SmartHome\Model\Sensor\SensorReader;
-use Nette;
 use Nette\Application\UI\Form;
 use Nette\Utils\ArrayHash;
 
 
-final class HomepagePresenter extends Nette\Application\UI\Presenter {
+final class HomepagePresenter extends BasePresenter {
 
 	public const DATE_FORMAT = 'Y-m-d';
 
