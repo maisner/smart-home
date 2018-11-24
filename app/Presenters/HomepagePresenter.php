@@ -2,13 +2,11 @@
 
 namespace Maisner\SmartHome\Presenters;
 
+use Maisner\SmartHome\Components\DateFilter\DateFilterControl;
+use Maisner\SmartHome\Components\DateFilter\IDateFilterControlFactory;
 use Maisner\SmartHome\Model\Sensor\ChartData\TemperatureChartDataFactory;
-use Maisner\SmartHome\Model\Sensor\ORM\SensorDataRepository;
 use Maisner\SmartHome\Model\Sensor\ORM\SensorRepository;
 use Maisner\SmartHome\Model\Sensor\SensorDataProvider;
-use Maisner\SmartHome\Model\Sensor\SensorReader;
-use Nette\Application\UI\Form;
-use Nette\Utils\ArrayHash;
 
 
 final class HomepagePresenter extends BasePresenter {
@@ -21,29 +19,33 @@ final class HomepagePresenter extends BasePresenter {
 	/** @var string @persistent */
 	public $to;
 
-	/** @var SensorReader @inject */
-	public $sensorReader;
-
-	/** @var SensorDataRepository @inject */
-	public $sensorDataRepository;
-
 	/** @var SensorRepository @inject */
 	public $sensorRepository;
 
 	/** @var SensorDataProvider @inject */
 	public $sensorDataProvider;
 
+	/** @var IDateFilterControlFactory @inject */
+	public $dateFilterFactory;
+
+	/**
+	 * @throws \Exception
+	 */
 	public function beforeRender(): void {
 		parent::beforeRender();
 
-		$today = (new \DateTimeImmutable())->format(self::DATE_FORMAT);
-
 		if ($this->from === NULL || $this->to === NULL) {
+			$today = (new \DateTimeImmutable())->format(self::DATE_FORMAT);
+
 			$this->from = $today;
 			$this->to = $today;
 		}
 	}
 
+	/**
+	 * @throws \Doctrine\DBAL\DBALException
+	 * @throws \Exception
+	 */
 	public function renderDefault(): void {
 		$sensor = $this->sensorRepository->getById(1);
 
@@ -59,33 +61,22 @@ final class HomepagePresenter extends BasePresenter {
 		$this->getTemplate()->data = $temperatureChartData;
 	}
 
-	public function actionReadSensors(): void {
-		$this->sensorReader->readAll();
-
-		$this->terminate();
-	}
-
 	/**
-	 * @return Form
+	 * @return DateFilterControl
 	 * @throws \Exception
 	 */
-	protected function createComponentFilterDate(): Form {
-		$form = new Form();
-		$form->addText('from', 'Od')
-			->setDefaultValue($this->from)
-			->setType('date')
-			->setRequired();
+	protected function createComponentDateFilter(): DateFilterControl {
+		$defaultFrom = new \DateTimeImmutable($this->from);
+		$defaultTo = new \DateTimeImmutable($this->to);
 
-		$form->addText('to', 'Do')
-			->setDefaultValue($this->to)
-			->setType('date')
-			->setRequired();
-
-		$form->addSubmit('submit', 'Odeslat');
-
-		$form->onSuccess[] = function (Form $form, ArrayHash $values): void {
-			$this->from = $values->from;
-			$this->to = $values->to;
+		$control = $this->dateFilterFactory->create($defaultFrom, $defaultTo);
+		$control->onFilter[] = function (
+			DateFilterControl $sender,
+			\DateTimeImmutable $from,
+			\DateTimeImmutable $to
+		): void {
+			$this->from = $from->format(self::DATE_FORMAT);
+			$this->to = $to->format(self::DATE_FORMAT);
 
 			if ($this->isAjax()) {
 				$this->redrawControl('chart');
@@ -96,6 +87,6 @@ final class HomepagePresenter extends BasePresenter {
 			$this->redirect('this');
 		};
 
-		return $form;
+		return $control;
 	}
 }
