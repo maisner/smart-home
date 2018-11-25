@@ -1,0 +1,9 @@
+{snippet chart}
+	<canvas class="temperatureChart" data-chart="{$chartData}"></canvas>
+
+	{if $presenter->isAjax()}
+		<script>
+			temperatureChartInit();
+		</script>
+	{/if}
+{/snippet}

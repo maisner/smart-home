@@ -2,9 +2,12 @@
 
 namespace Maisner\SmartHome\Presenters;
 
+use Maisner\SmartHome\Components\Chart\TemperatureChart\ITemperatureChartControlFactory;
+use Maisner\SmartHome\Components\Chart\TemperatureChart\TemperatureChartControl;
 use Maisner\SmartHome\Components\DateFilter\DateFilterControl;
 use Maisner\SmartHome\Components\DateFilter\IDateFilterControlFactory;
-use Maisner\SmartHome\Model\Sensor\ChartData\TemperatureChartDataFactory;
+use Maisner\SmartHome\Model\Sensor\ChartData\Temperature\Collection;
+use Maisner\SmartHome\Model\Sensor\ChartData\Temperature\Factory;
 use Maisner\SmartHome\Model\Sensor\ORM\SensorRepository;
 use Maisner\SmartHome\Model\Sensor\SensorDataProvider;
 
@@ -28,6 +31,9 @@ final class HomepagePresenter extends BasePresenter {
 	/** @var IDateFilterControlFactory @inject */
 	public $dateFilterFactory;
 
+	/** @var ITemperatureChartControlFactory @inject */
+	public $temperatureChartFactory;
+
 	/**
 	 * @throws \Exception
 	 */
@@ -40,25 +46,6 @@ final class HomepagePresenter extends BasePresenter {
 			$this->from = $today;
 			$this->to = $today;
 		}
-	}
-
-	/**
-	 * @throws \Doctrine\DBAL\DBALException
-	 * @throws \Exception
-	 */
-	public function renderDefault(): void {
-		$sensor = $this->sensorRepository->getById(1);
-
-		$temperatureChartData = TemperatureChartDataFactory::createFromArray(
-			$this->sensorDataProvider->getHourAverageValues(
-				$sensor->getId(),
-				new \DateTimeImmutable($this->from),
-				new \DateTimeImmutable($this->to)
-			),
-			$sensor
-		);
-
-		$this->getTemplate()->data = $temperatureChartData;
 	}
 
 	/**
@@ -88,5 +75,27 @@ final class HomepagePresenter extends BasePresenter {
 		};
 
 		return $control;
+	}
+
+	/**
+	 * @return TemperatureChartControl
+	 * @throws \Doctrine\DBAL\DBALException
+	 */
+	protected function createComponentTemperatureChart(): TemperatureChartControl {
+		$sensor = $this->sensorRepository->getById(1);
+
+		$temperatureChartData = Factory::createFromArray(
+			$this->sensorDataProvider->getHourAverageValues(
+				$sensor->getId(),
+				new \DateTimeImmutable($this->from),
+				new \DateTimeImmutable($this->to)
+			),
+			$sensor
+		);
+
+		$collection = new Collection();
+		$collection->add($temperatureChartData);
+
+		return $this->temperatureChartFactory->create($collection);
 	}
 }

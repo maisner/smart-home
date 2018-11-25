@@ -31,6 +31,7 @@ services:
 	router: Maisner\SmartHome\Router\RouterFactory::createRouter
 
 	- Maisner\SmartHome\Components\DateFilter\IDateFilterControlFactory
+	- Maisner\SmartHome\Components\Chart\TemperatureChart\ITemperatureChartControlFactory
 
 	- Maisner\SmartHome\Model\Sensor\SensorReader
 	- Maisner\SmartHome\Model\Sensor\ORM\SensorRepository
