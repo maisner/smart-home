@@ -1,21 +1,20 @@
 <?php declare(strict_types = 1);
 
-namespace Maisner\SmartHome\Model\Sensor\ChartData;
+namespace Maisner\SmartHome\Model\Sensor\ChartData\Temperature;
 
 
 use Maisner\SmartHome\Model\Sensor\ORM\Sensor;
 use Maisner\SmartHome\Model\Sensor\ORM\SensorData;
 use Nette\InvalidArgumentException;
 
-class TemperatureChartDataFactory {
-
+class Factory {
 	public const DATE_FORMAT = 'G:i';
 
 	/**
 	 * @param array|SensorData[] $sensorDataList
-	 * @return TemperatureChartData
+	 * @return Data
 	 */
-	public static function create(array $sensorDataList): TemperatureChartData {
+	public static function create(array $sensorDataList): Data {
 		if (\count($sensorDataList) === 0) {
 			throw new InvalidArgumentException('Sensor data array is empty');
 		}
@@ -35,15 +34,15 @@ class TemperatureChartDataFactory {
 			$sensorName = $data->getSensor()->getName();
 		}
 
-		return new TemperatureChartData($sensorName, $dates, $temperatures, $humidities);
+		return new Data($sensorName, $dates, $temperatures, $humidities);
 	}
 
 	/**
 	 * @param array|array[] $array
 	 * @param Sensor        $sensor
-	 * @return TemperatureChartData
+	 * @return Data
 	 */
-	public static function createFromArray(array $array, Sensor $sensor): TemperatureChartData {
+	public static function createFromArray(array $array, Sensor $sensor): Data {
 		$temperatures = [];
 		$humidities = [];
 		$dates = [];
@@ -61,6 +60,6 @@ class TemperatureChartDataFactory {
 			$dates[] = (string)$key;
 		}
 
-		return new TemperatureChartData($sensor->getName(), $dates, $temperatures, $humidities);
+		return new Data($sensor->getName(), $dates, $temperatures, $humidities);
 	}
 }
