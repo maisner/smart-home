@@ -1,9 +1,10 @@
 <?php declare(strict_types = 1);
 
-namespace Maisner\SmartHome\Model\Sensor\ChartData\Temperature;
+namespace Maisner\SmartHome\Model\Sensor\ChartDataset\Temperature;
 
 
-class Data {
+class Dataset {
+
 	/** @var string */
 	private $sensorName;
 

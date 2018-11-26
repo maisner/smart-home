@@ -6,10 +6,10 @@ use Maisner\SmartHome\Components\Chart\TemperatureChart\ITemperatureChartControl
 use Maisner\SmartHome\Components\Chart\TemperatureChart\TemperatureChartControl;
 use Maisner\SmartHome\Components\DateFilter\DateFilterControl;
 use Maisner\SmartHome\Components\DateFilter\IDateFilterControlFactory;
-use Maisner\SmartHome\Model\Sensor\ChartData\Temperature\Collection;
-use Maisner\SmartHome\Model\Sensor\ChartData\Temperature\Factory;
+use Maisner\SmartHome\Model\Sensor\BasicDataProvider\Temperature\AverageValuesProvider;
+use Maisner\SmartHome\Model\Sensor\ChartDataset\Temperature\Collection;
+use Maisner\SmartHome\Model\Sensor\ChartDataset\Temperature\Factory;
 use Maisner\SmartHome\Model\Sensor\ORM\SensorRepository;
-use Maisner\SmartHome\Model\Sensor\SensorDataProvider;
 
 
 final class HomepagePresenter extends BasePresenter {
@@ -25,8 +25,8 @@ final class HomepagePresenter extends BasePresenter {
 	/** @var SensorRepository @inject */
 	public $sensorRepository;
 
-	/** @var SensorDataProvider @inject */
-	public $sensorDataProvider;
+	/** @var AverageValuesProvider @inject */
+	public $tempDataProvider;
 
 	/** @var IDateFilterControlFactory @inject */
 	public $dateFilterFactory;
@@ -85,7 +85,7 @@ final class HomepagePresenter extends BasePresenter {
 		$sensor = $this->sensorRepository->getById(1);
 
 		$temperatureChartData = Factory::createFromArray(
-			$this->sensorDataProvider->getHourAverageValues(
+			$this->tempDataProvider->getHourAverageValues(
 				$sensor->getId(),
 				new \DateTimeImmutable($this->from),
 				new \DateTimeImmutable($this->to)

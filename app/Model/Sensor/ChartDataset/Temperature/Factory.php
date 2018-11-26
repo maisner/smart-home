@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Maisner\SmartHome\Model\Sensor\ChartData\Temperature;
+namespace Maisner\SmartHome\Model\Sensor\ChartDataset\Temperature;
 
 
 use Maisner\SmartHome\Model\Sensor\ORM\Sensor;
@@ -12,9 +12,9 @@ class Factory {
 
 	/**
 	 * @param array|SensorData[] $sensorDataList
-	 * @return Data
+	 * @return Dataset
 	 */
-	public static function create(array $sensorDataList): Data {
+	public static function create(array $sensorDataList): Dataset {
 		if (\count($sensorDataList) === 0) {
 			throw new InvalidArgumentException('Sensor data array is empty');
 		}
@@ -34,15 +34,15 @@ class Factory {
 			$sensorName = $data->getSensor()->getName();
 		}
 
-		return new Data($sensorName, $dates, $temperatures, $humidities);
+		return new Dataset($sensorName, $dates, $temperatures, $humidities);
 	}
 
 	/**
 	 * @param array|array[] $array
 	 * @param Sensor        $sensor
-	 * @return Data
+	 * @return Dataset
 	 */
-	public static function createFromArray(array $array, Sensor $sensor): Data {
+	public static function createFromArray(array $array, Sensor $sensor): Dataset {
 		$temperatures = [];
 		$humidities = [];
 		$dates = [];
@@ -60,6 +60,6 @@ class Factory {
 			$dates[] = (string)$key;
 		}
 
-		return new Data($sensor->getName(), $dates, $temperatures, $humidities);
+		return new Dataset($sensor->getName(), $dates, $temperatures, $humidities);
 	}
 }

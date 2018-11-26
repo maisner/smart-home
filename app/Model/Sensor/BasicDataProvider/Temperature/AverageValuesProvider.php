@@ -1,37 +1,26 @@
 <?php declare(strict_types = 1);
 
-namespace Maisner\SmartHome\Model\Sensor;
-
+namespace Maisner\SmartHome\Model\Sensor\BasicDataProvider\Temperature;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
-use Maisner\SmartHome\Model\Sensor\ORM\Sensor;
-use Maisner\SmartHome\Model\Sensor\ORM\SensorData;
-use Maisner\SmartHome\Model\Sensor\ORM\SensorDataRepository;
 
-class SensorDataProvider {
-
-	/** @var SensorDataRepository */
-	private $sensorDataRepository;
+class AverageValuesProvider {
 
 	/** @var Connection */
 	private $connection;
 
-	public function __construct(SensorDataRepository $sensorDataRepository, Connection $connection) {
-		$this->sensorDataRepository = $sensorDataRepository;
+	/**
+	 * AverageValuesProvider constructor.
+	 * @param Connection $connection
+	 */
+	public function __construct(Connection $connection) {
 		$this->connection = $connection;
 	}
 
 	/**
-	 * @param \DateTimeImmutable $day
-	 * @param Sensor             $sensor
-	 * @return array|SensorData[]
-	 */
-	public function findByDay(\DateTimeImmutable $day, Sensor $sensor): array {
-		return $this->sensorDataRepository->findByDay($sensor->getId(), $day);
-	}
-
-	/**
+	 * Return average values for hours
+	 *
 	 * @param int                $sensorId
 	 * @param \DateTimeImmutable $start
 	 * @param \DateTimeImmutable $end
@@ -80,6 +69,8 @@ class SensorDataProvider {
 	}
 
 	/**
+	 * Return average values for days
+	 *
 	 * @param int                $sensorId
 	 * @param \DateTimeImmutable $start
 	 * @param \DateTimeImmutable $end

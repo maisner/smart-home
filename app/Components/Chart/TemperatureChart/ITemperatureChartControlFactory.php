@@ -3,7 +3,7 @@
 namespace Maisner\SmartHome\Components\Chart\TemperatureChart;
 
 
-use Maisner\SmartHome\Model\Sensor\ChartData\Temperature\Collection;
+use Maisner\SmartHome\Model\Sensor\ChartDataset\Temperature\Collection;
 
 interface ITemperatureChartControlFactory {
 

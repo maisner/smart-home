@@ -3,8 +3,8 @@
 namespace Maisner\SmartHome\Components\Chart\TemperatureChart;
 
 
-use Maisner\SmartHome\Model\Sensor\ChartData\Temperature\Collection;
-use Maisner\SmartHome\Model\Sensor\ChartData\Temperature\Data;
+use Maisner\SmartHome\Model\Sensor\ChartDataset\Temperature\Collection;
+use Maisner\SmartHome\Model\Sensor\ChartDataset\Temperature\Dataset;
 use Nette\Application\UI\Control;
 use Nette\Bridges\ApplicationLatte\Template;
 
@@ -44,10 +44,10 @@ class TemperatureChartControl extends Control {
 	}
 
 	/**
-	 * @param Data $data
+	 * @param Dataset $data
 	 * @return array|mixed[]
 	 */
-	private function prepareData(Data $data): array {
+	private function prepareData(Dataset $data): array {
 		$res = [];
 
 		$res['name'] = $data->getSensorName();
