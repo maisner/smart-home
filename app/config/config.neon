@@ -37,6 +37,7 @@ services:
 	- Maisner\SmartHome\Model\Sensor\ORM\SensorRepository
 	- Maisner\SmartHome\Model\Sensor\ORM\SensorDataRepository
 	- Maisner\SmartHome\Model\Sensor\BasicDataProvider\Temperature\AverageValuesProvider
+	- Maisner\SmartHome\Model\Sensor\ChartDataset\Temperature\AverageDatasetProvider
 
 extensions:
     dbal: Nettrine\DBAL\DI\DbalExtension

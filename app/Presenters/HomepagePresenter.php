@@ -6,10 +6,9 @@ use Maisner\SmartHome\Components\Chart\TemperatureChart\ITemperatureChartControl
 use Maisner\SmartHome\Components\Chart\TemperatureChart\TemperatureChartControl;
 use Maisner\SmartHome\Components\DateFilter\DateFilterControl;
 use Maisner\SmartHome\Components\DateFilter\IDateFilterControlFactory;
-use Maisner\SmartHome\Model\Sensor\BasicDataProvider\Temperature\AverageValuesProvider;
-use Maisner\SmartHome\Model\Sensor\ChartDataset\Temperature\Collection;
-use Maisner\SmartHome\Model\Sensor\ChartDataset\Temperature\Factory;
+use Maisner\SmartHome\Model\Sensor\ChartDataset\Temperature\AverageDatasetProvider;
 use Maisner\SmartHome\Model\Sensor\ORM\SensorRepository;
+use Nette\Utils\ArrayList;
 
 
 final class HomepagePresenter extends BasePresenter {
@@ -25,14 +24,14 @@ final class HomepagePresenter extends BasePresenter {
 	/** @var SensorRepository @inject */
 	public $sensorRepository;
 
-	/** @var AverageValuesProvider @inject */
-	public $tempDataProvider;
-
 	/** @var IDateFilterControlFactory @inject */
 	public $dateFilterFactory;
 
 	/** @var ITemperatureChartControlFactory @inject */
 	public $temperatureChartFactory;
+
+	/** @var AverageDatasetProvider @inject */
+	public $averageDatasetProvider;
 
 	/**
 	 * @throws \Exception
@@ -82,19 +81,14 @@ final class HomepagePresenter extends BasePresenter {
 	 * @throws \Doctrine\DBAL\DBALException
 	 */
 	protected function createComponentTemperatureChart(): TemperatureChartControl {
-		$sensor = $this->sensorRepository->getById(1);
+		$sensorList = new ArrayList();
+		$sensorList[] = $this->sensorRepository->getById(1);
 
-		$temperatureChartData = Factory::createFromArray(
-			$this->tempDataProvider->getHourAverageValues(
-				$sensor->getId(),
-				new \DateTimeImmutable($this->from),
-				new \DateTimeImmutable($this->to)
-			),
-			$sensor
+		$collection = $this->averageDatasetProvider->getHourAverage(
+			$sensorList,
+			new \DateTimeImmutable($this->from),
+			new \DateTimeImmutable($this->to)
 		);
-
-		$collection = new Collection();
-		$collection->add($temperatureChartData);
 
 		return $this->temperatureChartFactory->create($collection);
 	}
